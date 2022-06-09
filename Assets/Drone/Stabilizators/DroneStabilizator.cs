@@ -2,15 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct MotorInfo
-{
-    public DroneMotor Motor;
-    public float PitchCorrection;
-    public float RollCorrection;
-    public float YawCorrection;
-}
-
 public class DroneStabilizator : MonoBehaviour
 {
     [Header("Motors")]
