@@ -21,8 +21,17 @@ public struct DroneControlllerData
 public class DroneController : MonoBehaviour
 {
     public DroneStabilizator Drone;
-    public float Height = 5;
+    
     public float HeightSpeed = 1;
+
+    private float currentHeight = 5;
+    private float initialHeight;
+
+    private void Start()
+    {
+        initialHeight = currentHeight = Drone.transform.position.y;    
+    }
+
     void Update()
     {
         float roll = 0;
@@ -35,8 +44,10 @@ public class DroneController : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) pitch = -1;
         if (Input.GetKey(KeyCode.Q)) yaw = -1;
         if (Input.GetKey(KeyCode.E)) yaw = 1;
-        if (Input.GetKey(KeyCode.LeftShift)) Height += HeightSpeed * Time.deltaTime;
-        if (Input.GetKey(KeyCode.LeftControl)) Height -= HeightSpeed * Time.deltaTime;
-        Drone.UpdateComputer(new DroneControlllerData(roll, pitch, Height, yaw));
+        if (Input.GetKey(KeyCode.LeftShift)) currentHeight += HeightSpeed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.LeftControl)) currentHeight -= HeightSpeed * Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.R)) currentHeight = initialHeight;
+
+        Drone.UpdateComputer(new DroneControlllerData(roll, pitch, currentHeight, yaw));
     }
 }
