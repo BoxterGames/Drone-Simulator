@@ -10,6 +10,5 @@ public class Lidar : MonoBehaviour
     {
         Physics.Raycast(transform.position, Vector3.down * 100000, out RaycastHit hitInfo);
         Distance = hitInfo.distance;
-        Distance = transform.position.y;
     }
 }
