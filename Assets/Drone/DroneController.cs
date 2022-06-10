@@ -32,7 +32,7 @@ public class DroneController : MonoBehaviour
         initialHeight = currentHeight = Drone.transform.position.y;    
     }
 
-    void Update()
+    void LateUpdate()
     {
         float roll = 0;
         float pitch = 0;
