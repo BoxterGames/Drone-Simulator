@@ -29,7 +29,7 @@ public class Gyro : MonoBehaviour
 		return new Vector3(NormalizeAngle(v.x), NormalizeAngle(v.y), NormalizeAngle(v.z));
 	}
 
-	private float NormalizeAngle(float a)
+	public float NormalizeAngle(float a)
 	{
 		if (a > 180)
 		{

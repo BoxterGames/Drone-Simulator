@@ -27,4 +27,12 @@ public class DroneStabilizator : MonoBehaviour
             Motors[i].UpdatePower(motorPower[i]);
         }
     }
+
+    public void Reset()
+    {
+        foreach(var i in Stabilizators)
+        {
+            i.Reset();
+        }
+    }
 }
