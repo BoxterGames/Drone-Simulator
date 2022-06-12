@@ -8,7 +8,7 @@ public class HeightStabilizator : AbstractStabilizator
 
     public override float[] CalculateMotorsPower(DroneControlllerData data)
     {
-        float heightPower = PID.Update(data.Height, Lidar.Distance, Time.deltaTime);
+        float heightPower = PID.Update(data.Height - Lidar.Distance, Time.deltaTime);
         heightPower = Mathf.Clamp(heightPower, 0, 1);
 
         float[] power = new float[MotorCount];
