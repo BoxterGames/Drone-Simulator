@@ -14,6 +14,9 @@ public class DroneMotor : MonoBehaviour
 
     public float currentPower;
 
+    [Range(0, 360)]
+    float angle = 0;
+
     public void UpdatePower(float newPower)
     {
         currentPower = Mathf.Clamp01(newPower);
@@ -23,6 +26,7 @@ public class DroneMotor : MonoBehaviour
     {
         Vector3 direction = new Vector3(Mathf.Sin(SidePowerDirection * Mathf.Deg2Rad), 0, Mathf.Cos(SidePowerDirection * Mathf.Deg2Rad));
         Vector3 resultPower = Vector3.up * FlightPower + SidePower * direction;
+        Debug.DrawRay(transform.position, transform.rotation * direction * 20);
 
         DroneRigidBody?.AddForceAtPosition(transform.rotation * resultPower * currentPower, transform.position, ForceMode.Force);
     }

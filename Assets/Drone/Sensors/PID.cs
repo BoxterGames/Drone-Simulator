@@ -16,12 +16,17 @@ public class PID
 	}
 
 
-	public float Update(float setpoint, float currPoint, float dt)
+	public float Update(float p, float dt)
 	{
-		float p = setpoint - currPoint;
 		float d = (p - lastP) / dt;
 		i += p * dt;
 		lastP = p;
 		return p * pFactor + i * iFactor + d * dFactor;
 	}
+
+	public void Reset()
+    {
+		i = 0;
+		lastP = 0;
+    }
 }
