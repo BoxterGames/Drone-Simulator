@@ -19,7 +19,7 @@ public class DroneMotor : MonoBehaviour
 
     public void UpdatePower(float newPower)
     {
-        currentPower = Mathf.Clamp01(newPower);
+        currentPower = newPower;
     }
 
     public void Update()
