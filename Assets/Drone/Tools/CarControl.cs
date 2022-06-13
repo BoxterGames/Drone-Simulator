@@ -15,7 +15,7 @@ public class CarControl : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.W))
         {
