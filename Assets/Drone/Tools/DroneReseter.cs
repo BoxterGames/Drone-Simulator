@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PositionReseter : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(DroneStabilizator))]
+public class DroneReseter : MonoBehaviour
 {
-    public Rigidbody DroneBody;
-    public DroneStabilizator Stabilizator;
+    private Rigidbody droneBody;
+    private DroneStabilizator stabilizator;
 
     private Vector3 initialPosition;
     private Quaternion initialRotation;
@@ -18,6 +20,9 @@ public class PositionReseter : MonoBehaviour
 
     private void Start()
     {
+        droneBody = GetComponent<Rigidbody>();
+        stabilizator = GetComponent<DroneStabilizator>();
+        
         initialPosition = transform.position;
         initialRotation = transform.rotation;
     }
@@ -29,10 +34,10 @@ public class PositionReseter : MonoBehaviour
             return;
         }
 
-        DroneBody.transform.position = initialPosition;
-        DroneBody.transform.rotation = initialRotation;
-        DroneBody.velocity = Vector3.zero;
-        DroneBody.angularVelocity = Vector3.zero;
-        Stabilizator.Reset();
+        droneBody.transform.position = initialPosition;
+        droneBody.transform.rotation = initialRotation;
+        droneBody.velocity = Vector3.zero;
+        droneBody.angularVelocity = Vector3.zero;
+        stabilizator.Reset();
     }
 }

@@ -11,15 +11,14 @@ public static class AngleNormalizer
 
 	public static float NormalizeAngle(float a)
 	{
-		if (a > 180)
+		while (a > 180)
 		{
-			return a - 360;
-
+			a = a - 360;
 		}
 
-		if (a < -180)
+		while (a < -180)
 		{
-			return 360 + a;
+			a = 360 + a;
 		}
 
 		return a;
