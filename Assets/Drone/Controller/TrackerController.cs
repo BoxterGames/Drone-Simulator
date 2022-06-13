@@ -5,11 +5,12 @@ using UnityEngine;
 public class TrackerController : MonoBehaviour
 {
     public DroneStabilizator Drone;
+    public PositionReseter Reseter;
+
     public PID SidePid;
     public PID ForwardPid;
-    public PID yawPid;
+    public PID YawPid;
 
-    public PositionReseter Reseter;
     public float Height = 5;
 
     private void Start()
@@ -31,8 +32,11 @@ public class TrackerController : MonoBehaviour
         float pitchRaw = ForwardPid.Update(localPoint.z, Time.deltaTime);
         float pitchClamped = Mathf.Clamp(pitchRaw, -1, 1);
 
+        //Yaw calculated
+        float delta = AngleNormalizer.NormalizeAngle(transform.eulerAngles.y - Drone.transform.eulerAngles.y);
+        float yawRaw = YawPid.Update(delta, Time.deltaTime);
+        float yawClamped = Mathf.Clamp(yawRaw, -1, 1);
 
-
-        Drone.UpdateComputer(new DroneControlllerData(rollClamped, pitchClamped, Height, transform.eulerAngles.y));
+        Drone.UpdateComputer(new DroneControlllerData(rollClamped, pitchClamped, Height, yawClamped));
     }
 }
