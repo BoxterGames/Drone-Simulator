@@ -20,28 +20,7 @@ public class Gyro : MonoBehaviour
 
 	public void Update()
 	{
-		rotation = NormalizeAngle(transform.eulerAngles);
+		rotation = AngleNormalizer.NormalizeAngle(transform.eulerAngles);
 		rotationSpeed = RigidBody.angularVelocity * Mathf.Rad2Deg;
-	}
-
-	private Vector3 NormalizeAngle(Vector3 v)
-	{
-		return new Vector3(NormalizeAngle(v.x), NormalizeAngle(v.y), NormalizeAngle(v.z));
-	}
-
-	private float NormalizeAngle(float a)
-	{
-		if (a > 180)
-		{
-			return a - 360;
-
-		}
-
-		if (a < -180)
-		{
-			return 360 + a;
-		}
-
-		return a;
 	}
 }

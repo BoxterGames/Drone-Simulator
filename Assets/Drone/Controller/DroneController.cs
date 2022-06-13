@@ -6,15 +6,15 @@ public struct DroneControlllerData
 {
     public float Roll;
     public float Pitch;
-    public float YawSpeed;
+    public float Yaw;
     public float Height;
 
-    public DroneControlllerData(float roll, float pitch, float height, float yawSpeed)
+    public DroneControlllerData(float roll, float pitch, float height, float yaw)
     {
         Roll = roll;
         Pitch = pitch;
         Height = height;
-        YawSpeed = yawSpeed;
+        Yaw = yaw;
     }
 }
 
@@ -44,6 +44,7 @@ public class DroneController : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) pitch = -1;
         if (Input.GetKey(KeyCode.Q)) yaw = -1;
         if (Input.GetKey(KeyCode.E)) yaw = 1;
+
         if (Input.GetKey(KeyCode.LeftShift)) currentHeight += HeightSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.LeftControl)) currentHeight -= HeightSpeed * Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.R)) currentHeight = initialHeight;
