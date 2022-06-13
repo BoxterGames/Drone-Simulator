@@ -5,7 +5,6 @@ using UnityEngine;
 public class RotationStabilizator : AbstractStabilizator
 {
     public float BankLimit = 25;
-    public float[] MotorCompensation = new float[4];
     public Gyro Gyroscope;
     [Range(0, 1)]
     public float StabllizationPower = 0.5f;

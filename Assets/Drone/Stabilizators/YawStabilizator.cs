@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class YawStabilizator : AbstractStabilizator
 {
-    public float[] MotorCompensation = new float[4];
     public Gyro Gyroscope;
     public float StabilizationPower = 0.3f;
     public float YawSpeed = 45;
@@ -14,7 +13,7 @@ public class YawStabilizator : AbstractStabilizator
     {
         currentYaw += YawSpeed * data.Yaw * Time.deltaTime;
         float value = Gyroscope.Yaw;
-        float correction = PID.Update(Gyroscope.NormalizeAngle(currentYaw - value), Time.deltaTime);
+        float correction = PID.Update(AngleNormalizer.NormalizeAngle(currentYaw - value), Time.deltaTime);
 
         return Mathf.Clamp(correction, -1, 1);
     }
