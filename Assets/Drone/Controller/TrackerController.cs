@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrackerController : MonoBehaviour
 {
     public DroneStabilizator Drone;
-    public PositionReseter Reseter;
+    public DroneReseter Reseter;
 
     public PID SidePid;
     public PID ForwardPid;
