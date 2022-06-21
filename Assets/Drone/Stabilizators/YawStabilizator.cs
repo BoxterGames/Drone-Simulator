@@ -5,16 +5,16 @@ using UnityEngine;
 public class YawStabilizator : AbstractStabilizator
 {
     public Gyro Gyroscope;
-    [Range(0,1)]
-    public float StabilizationPower = 0.3f;
+ 
     public float YawSpeed = 45;
-    private float currentYaw = 0;
 
     public override float CalculateMotorsPower(DroneControlllerData data)
     {
-        currentYaw += YawSpeed * data.Yaw * Time.deltaTime;
-        float value = Gyroscope.Yaw;
-        float correction = PID.Update(AngleNormalizer.NormalizeAngle(currentYaw - value), Time.deltaTime);
+        float idealSpeed = data.Yaw * YawSpeed;
+        float currentSpeed = Gyroscope.YawSpeed;
+
+        float delta = idealSpeed - currentSpeed;
+        float correction = PID.Update(delta, Time.deltaTime);
 
         return Mathf.Clamp(correction, -1, 1) * StabilizationPower;
     }
