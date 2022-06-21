@@ -16,7 +16,6 @@ public class Gyro : MonoBehaviour
 
 	private Vector3 rotationSpeed;
 	private Vector3 rotation;
-	private Quaternion prevRotation;
 
 	public void Update()
 	{
