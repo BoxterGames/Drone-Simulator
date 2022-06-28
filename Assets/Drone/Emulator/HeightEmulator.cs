@@ -17,20 +17,22 @@ public class HeightEmulator : AbstractEmulator
 
     private const float G = -9.8f;
 
-    public override void Init(float initialValue)
+    public override void ResetEmulator()
     {
-        CurrentValue = initialValue;
+        CurrentValue = 0;
         Force = -G;
         Velocity = 0;
     }
 
-    public override void NextFrame(float dt)
+    public override void NextFrame(FrameData data)
     {
-        //For simplify we ignore that motor need time to start rotation
-        CurrentValue += Velocity * dt;
-        Velocity += (Force + G) * dt;
+        IdealValue = data.IdealData;
 
-        float value = HeightPID.Update(IdealValue - CurrentValue, dt);
+        //For simplify we ignore that motor need time to start rotation
+        CurrentValue += Velocity * data.DeltaTime;
+        Velocity += (Force + G) * data.DeltaTime;
+
+        float value = HeightPID.Update(IdealValue - CurrentValue, data.DeltaTime);
         Force = MotorForce * Mathf.Clamp01(value) * HeightPower;
     }
 }
