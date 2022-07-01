@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Sensors.Input;
 public class RotationStabilizator : AbstractStabilizator
 {
     public float BankLimit = 25;
