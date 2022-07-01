@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sensors.Input;
-public class HeightStabilizator : AbstractStabilizator
-{
-    public Lidar Lidar;
+using Sensors;
 
-    public override float CalculateMotorsPower(DroneControlllerData data)
+namespace Stabilizators
+{
+    public class HeightStabilizator : AbstractStabilizator
     {
-        float heightPower = PID.Update(data.Height - Lidar.Distance, Time.deltaTime);
-        return Mathf.Clamp(heightPower, 0, 1);
+        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData)
+        {
+            float heightPower = PID.Update(data.Height - sensorsData.Height, Time.deltaTime);
+            return Mathf.Clamp(heightPower, 0, 1);
+        }
     }
 }
