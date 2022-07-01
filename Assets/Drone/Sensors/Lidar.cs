@@ -8,9 +8,9 @@ namespace Sensors.Input
     {
         public float Distance { get; private set; }
     
-        public override void FillSensorsData(Dictionary<StabilizationType, float> data)
+        public override void FillSensorsData(ref SensorsData data)
         {
-            AddValue(data, StabilizationType.Throttle, Distance);
+            data.Height = Distance;
         }
 
         private void Update()

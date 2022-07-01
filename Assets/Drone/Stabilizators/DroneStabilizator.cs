@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sensors;
 using Sensors.Input;
 using System;
 
@@ -27,9 +28,9 @@ public class DroneStabilizator : MonoBehaviour
 
     public void UpdateComputer(DroneControlllerData data)
     {
-        var inputData = new Dictionary<StabilizationType, float>();
+        var sensorsData = new SensorsData();
 
-        Array.ForEach(Input, i => i.FillSensorsData(inputData));
+        Array.ForEach(Input, i => i.FillSensorsData(ref sensorsData));
 
         foreach (var i in Stabilizators)
         {
