@@ -4,6 +4,7 @@ using UnityEngine;
 using Sensors;
 using Sensors.Input;
 using System;
+using Stabilizators;
 
 public class DroneStabilizator : MonoBehaviour
 {
@@ -20,10 +21,7 @@ public class DroneStabilizator : MonoBehaviour
 
     private void Start()
     {
-       foreach(var i in Stabilizators)
-        {
-            stabiliztionFactors.Add(i.Type, 0);
-        }    
+        Array.ForEach(Stabilizators, i => stabiliztionFactors.Add(i.Type, 0));
     }
 
     public void UpdateComputer(DroneControlllerData data)
@@ -31,11 +29,7 @@ public class DroneStabilizator : MonoBehaviour
         var sensorsData = new SensorsData();
 
         Array.ForEach(Input, i => i.FillSensorsData(ref sensorsData));
-
-        foreach (var i in Stabilizators)
-        {
-            stabiliztionFactors[i.Type] = i.CalculateMotorsPower(data);
-        }
+        Array.ForEach(Stabilizators, i => stabiliztionFactors[i.Type] = i.CalculateMotorsPower(data, sensorsData));
 
         for (int i = 0; i < Motors.Length; i++)
         {
@@ -53,9 +47,6 @@ public class DroneStabilizator : MonoBehaviour
 
     public void Reset()
     {
-        foreach(var i in Stabilizators)
-        {
-            i.Reset();
-        }
+        Array.ForEach(Stabilizators, i => i.Reset());
     }
 }
