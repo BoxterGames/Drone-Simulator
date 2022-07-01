@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sensors.Input;
+using System;
 
 public class DroneStabilizator : MonoBehaviour
 {
+    [Header("Sensors")]
+    public InputSensor[] Input;
+
     [Header("Motors")]
     public DroneMotor[] Motors = new DroneMotor[4];
 
@@ -22,6 +27,10 @@ public class DroneStabilizator : MonoBehaviour
 
     public void UpdateComputer(DroneControlllerData data)
     {
+        var inputData = new Dictionary<StabilizationType, float>();
+
+        Array.ForEach(Input, i => i.FillSensorsData(inputData));
+
         foreach (var i in Stabilizators)
         {
             stabiliztionFactors[i.Type] = i.CalculateMotorsPower(data);
