@@ -2,13 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lidar : MonoBehaviour
+namespace Sensors.Input
 {
-    public float Distance { get; private set; }
-
-    private void Update()
+    public class Lidar : InputSensor
     {
-        Physics.Raycast(transform.position, Vector3.down * 100000, out RaycastHit hitInfo);
-        Distance = hitInfo.distance;
+        public float Distance { get; private set; }
+    
+        public override void FillSensorsData(Dictionary<StabilizationType, float> data)
+        {
+            AddValue(data, StabilizationType.Throttle, Distance);
+        }
+
+        private void Update()
+        {
+            Physics.Raycast(transform.position, Vector3.down * 100000, out RaycastHit hitInfo);
+            Distance = hitInfo.distance;
+        }
     }
 }

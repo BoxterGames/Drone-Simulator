@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Sensors.Input;
 public class HeightStabilizator : AbstractStabilizator
 {
     public Lidar Lidar;
