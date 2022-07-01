@@ -29,7 +29,7 @@ public class DroneStabilizator : MonoBehaviour
         var sensorsData = new SensorsData();
 
         Array.ForEach(Input, i => i.FillSensorsData(ref sensorsData));
-        Array.ForEach(Stabilizators, i => stabiliztionFactors[i.Type] = i.CalculateMotorsPower(data, sensorsData));
+        Array.ForEach(Stabilizators, i => stabiliztionFactors[i.Type] = i.CalculateMotorsPower(data, sensorsData, Time.deltaTime));
 
         for (int i = 0; i < Motors.Length; i++)
         {

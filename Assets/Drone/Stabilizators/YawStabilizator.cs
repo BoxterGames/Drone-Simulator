@@ -12,11 +12,11 @@ namespace Stabilizators
         public float YawSpeed = 45;
         private float currentYaw = 0;
 
-        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorData)
+        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorData, float dt)
         {
             currentYaw += YawSpeed * data.Yaw * Time.deltaTime;
             float value = sensorData.EulerAngles.y;
-            float correction = PID.Update(AngleNormalizer.NormalizeAngle(currentYaw - value), Time.deltaTime);
+            float correction = PID.Update(AngleNormalizer.NormalizeAngle(currentYaw - value), dt);
 
             return Mathf.Clamp(correction, -1, 1) * StabilizationPower;
         }

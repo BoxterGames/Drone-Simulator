@@ -12,12 +12,12 @@ namespace Stabilizators
         [Range(0, 1)]
         public float StabllizationPower = 0.5f;
 
-        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData)
+        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData, float dt)
         {
             float input = Type == StabilizationType.Roll ? data.Roll : data.Pitch;
             float value = Type == StabilizationType.Roll ? sensorsData.EulerAngles.z : sensorsData.EulerAngles.x;
 
-            float correction = PID.Update(input * BankLimit - value, Time.deltaTime);
+            float correction = PID.Update(input * BankLimit - value, dt);
             return Mathf.Clamp(correction, -1, 1) * StabllizationPower;
         }
     }
