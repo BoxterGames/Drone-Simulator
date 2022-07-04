@@ -9,7 +9,8 @@ namespace Stabilizators
     {
         public StabilizationType Type;
         public PID PID;
-
+        [Range(0, 1)]
+        public float StabilizationPower = 0.5f;
         public abstract float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorData, float dt);
 
         public virtual void Reset()
