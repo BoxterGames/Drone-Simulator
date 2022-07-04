@@ -7,6 +7,8 @@ namespace Sensors
     public struct SensorsData
     {
         public float Height;
+        public float HeightVelocity;
+
         public Vector3 EulerAngles;
         public Vector3 AngularVelocity;
     }
