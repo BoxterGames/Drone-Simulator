@@ -13,11 +13,13 @@ namespace Stabilizators
 
         public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData, float dt)
         {
-            float delta = MaximumSpeed * data.Height - sensorsData.HeightVelocity;
-            float heightPower = Speed.Update(delta, dt);
-            float clampedPower = Mathf.Clamp(heightPower, 0, 1);
+            float delta = data.Height - sensorsData.Height;
+            float input = Mathf.Clamp(PID.Update(delta, dt), -1, 1);
 
-            return clampedPower;
+            float deltaSpeed = MaximumSpeed * input - sensorsData.HeightVelocity;
+            float motorPower = Mathf.Clamp01(Speed.Update(deltaSpeed, dt));
+            Debug.Log(input + " " + motorPower);
+            return motorPower;
         }
 
         public override void Reset()
