@@ -16,7 +16,7 @@ namespace Sensors.Input
             data.HeightVelocity = Velocity;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             Physics.Raycast(transform.position, Vector3.down * 100000, out RaycastHit hitInfo);
             Distance = hitInfo.distance;
