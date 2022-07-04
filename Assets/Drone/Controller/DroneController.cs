@@ -24,7 +24,7 @@ public class DroneController : MonoBehaviour
     
     public float HeightSpeed = 1;
 
-    private float currentHeight = 5;
+    public float currentHeight = 5;
     private float initialHeight;
 
     private void Start()

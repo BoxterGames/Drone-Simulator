@@ -25,7 +25,7 @@ public class HeightEmulator : AbstractEmulator
 
     public override void NextFrame(FrameData data)
     {
-        IdealValue = data.IdealData * MaximumSpeed;
+        IdealValue = data.IdealData;
 
         var sensors = CalculatePhysics(data);
         var input = new DroneControlllerData() { Height = data.IdealData };
@@ -37,7 +37,6 @@ public class HeightEmulator : AbstractEmulator
         //For simplify we ignore that motor need time to start rotation
         CurrentValue += Velocity * data.DeltaTime;
         Velocity += (Force + G) * data.DeltaTime;
-        CurrentValue = Velocity;
 
         return new SensorsData()
         {
