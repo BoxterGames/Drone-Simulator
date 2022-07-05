@@ -18,7 +18,7 @@ public class RecordPlayer : MonoBehaviour
     [Header("Time")]
     public float Time;
     public float TimeEnd = 20;
-    public float FrameFrequency;
+    public float FrameFrequency = 1 / 60f;
 
     [Header("Input")]
     public AnimationCurve IdealData;

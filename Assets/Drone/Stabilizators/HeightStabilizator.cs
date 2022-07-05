@@ -1,14 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sensors;
 
-public class HeightStabilizator : AbstractStabilizator
+namespace Stabilizators
 {
-    public Lidar Lidar;
-
-    public override float CalculateMotorsPower(DroneControlllerData data)
+    public class HeightStabilizator : AbstractStabilizator
     {
-        float heightPower = PID.Update(data.Height - Lidar.Distance, Time.deltaTime);
-        return Mathf.Clamp(heightPower, 0, 1);
+        [Header("Drag part")]
+        public PID Speed;
+        public float MaximumSpeed;
+
+        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData, float dt)
+        {
+            float delta = data.Height - sensorsData.Height;
+            float input = Mathf.Clamp(PID.Update(delta, dt), -1, 1);
+
+            float deltaSpeed = MaximumSpeed * input - sensorsData.HeightVelocity;
+            float motorPower = Mathf.Clamp01(Speed.Update(deltaSpeed, dt));
+
+            return motorPower;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            Speed.Reset();
+        }
     }
 }

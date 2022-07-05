@@ -8,6 +8,7 @@ public class EmulatorVisualizer : MonoBehaviour
     public AbstractEmulator Emulator;
 
     public Color VisualizeColor = Color.blue;
+
     private List<Vector2> currentValues = new List<Vector2>();
     private List<Vector2> idealValues = new List<Vector2>();
 

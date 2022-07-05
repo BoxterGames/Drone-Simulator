@@ -1,21 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sensors;
 
-public class YawStabilizator : AbstractStabilizator
+namespace Stabilizators
 {
-    public Gyro Gyroscope;
-    [Range(0,1)]
-    public float StabilizationPower = 0.3f;
-    public float YawSpeed = 45;
-    private float currentYaw = 0;
-
-    public override float CalculateMotorsPower(DroneControlllerData data)
+    public class YawStabilizator : AbstractStabilizator
     {
-        currentYaw += YawSpeed * data.Yaw * Time.deltaTime;
-        float value = Gyroscope.Yaw;
-        float correction = PID.Update(AngleNormalizer.NormalizeAngle(currentYaw - value), Time.deltaTime);
+        [Range(0, 1)]
+        public float StabilizationPower = 0.3f;
+        public float YawSpeed = 45;
+        private float currentYaw = 0;
 
-        return Mathf.Clamp(correction, -1, 1) * StabilizationPower;
+        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorData, float dt)
+        {
+            currentYaw += YawSpeed * data.Yaw * Time.deltaTime;
+            float value = sensorData.EulerAngles.y;
+            float correction = PID.Update(AngleNormalizer.NormalizeAngle(currentYaw - value), dt);
+
+            return Mathf.Clamp(correction, -1, 1) * StabilizationPower;
+        }
     }
 }

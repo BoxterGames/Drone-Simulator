@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sensors;
 
-public class RotationStabilizator : AbstractStabilizator
+namespace Stabilizators
 {
-    public float BankLimit = 25;
-    public Gyro Gyroscope;
-    [Range(0, 1)]
-    public float StabllizationPower = 0.5f;
-
-    public override float CalculateMotorsPower(DroneControlllerData data)
+    public class RotationStabilizator : AbstractStabilizator
     {
-        float input = Type == StabilizationType.Roll ? data.Roll : data.Pitch;
-        float value = Type == StabilizationType.Roll ? Gyroscope.Roll : Gyroscope.Pitch;
+        public float BankLimit = 25;
 
-        float correction = PID.Update(input * BankLimit - value, Time.deltaTime);
-        return Mathf.Clamp(correction, -1, 1) * StabllizationPower;
+        [Range(0, 1)]
+        public float StabllizationPower = 0.5f;
+
+        public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData, float dt)
+        {
+            float input = Type == StabilizationType.Roll ? data.Roll : data.Pitch;
+            float value = Type == StabilizationType.Roll ? sensorsData.EulerAngles.z : sensorsData.EulerAngles.x;
+
+            float correction = PID.Update(input * BankLimit - value, dt);
+            return Mathf.Clamp(correction, -1, 1) * StabllizationPower;
+        }
     }
 }
