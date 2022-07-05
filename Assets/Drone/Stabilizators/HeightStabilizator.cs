@@ -18,7 +18,7 @@ namespace Stabilizators
 
             float deltaSpeed = MaximumSpeed * input - sensorsData.HeightVelocity;
             float motorPower = Mathf.Clamp01(Speed.Update(deltaSpeed, dt));
-            Debug.Log(input + " " + motorPower);
+
             return motorPower;
         }
 
