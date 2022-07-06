@@ -8,17 +8,18 @@ namespace Stabilizators
     public class RotationStabilizator : AbstractStabilizator
     {
         public float BankLimit = 25;
-
-        [Range(0, 1)]
-        public float StabllizationPower = 0.5f;
+        public SimplePID SimplePID;
 
         public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData, float dt)
         {
             float input = Type == StabilizationType.Roll ? data.Roll : data.Pitch;
             float value = Type == StabilizationType.Roll ? sensorsData.EulerAngles.z : sensorsData.EulerAngles.x;
+            return SimplePID.GetValue(input * BankLimit - value, dt);
+        }
 
-            float correction = PID.Update(input * BankLimit - value, dt);
-            return Mathf.Clamp(correction, -1, 1) * StabllizationPower;
+        public override void Reset()
+        {
+            SimplePID.Reset();
         }
     }
 }

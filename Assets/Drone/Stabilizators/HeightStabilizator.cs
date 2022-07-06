@@ -7,25 +7,17 @@ namespace Stabilizators
 {
     public class HeightStabilizator : AbstractStabilizator
     {
-        [Header("Drag part")]
-        public PID Speed;
-        public float MaximumSpeed;
+        public VelocityPID VelocityPID;
 
         public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorsData, float dt)
         {
-            float delta = data.Height - sensorsData.Height;
-            float input = Mathf.Clamp(PID.Update(delta, dt), -1, 1);
-
-            float deltaSpeed = MaximumSpeed * input - sensorsData.HeightVelocity;
-            float motorPower = Mathf.Clamp01(Speed.Update(deltaSpeed, dt));
-
-            return motorPower;
+            float p = data.Height - sensorsData.Height;
+            return VelocityPID.GetValue(p, sensorsData.HeightVelocity, dt);
         }
 
         public override void Reset()
         {
-            base.Reset();
-            Speed.Reset();
+            VelocityPID.Reset();
         }
     }
 }
