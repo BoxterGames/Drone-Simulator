@@ -33,8 +33,8 @@ public class EmulatorVisualizer : MonoBehaviour
     public void NextFrame(FrameData data)
     {
         Emulator.NextFrame(data);
-        currentValues.Add(new Vector2(data.Time, Emulator.CurrentValue));
-        idealValues.Add(new Vector2(data.Time, Emulator.IdealValue));
+        currentValues.Add(new Vector2(data.Time, Emulator.CurrentValue / 360f));
+        idealValues.Add(new Vector2(data.Time, Emulator.IdealValue / 360f));
     }
 
     private void Visualize()

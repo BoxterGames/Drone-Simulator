@@ -23,7 +23,6 @@ public class DroneMotor : MonoBehaviour
     {
         Vector3 direction = new Vector3(Mathf.Sin(SidePowerDirection * Mathf.Deg2Rad), 0, Mathf.Cos(SidePowerDirection * Mathf.Deg2Rad));
         Vector3 resultPower = Vector3.up * FlightPower + SidePower * direction;
-        Debug.DrawRay(transform.position, transform.rotation * direction * 20);
 
         DroneRigidBody?.AddForceAtPosition(transform.rotation * resultPower * power, transform.position, ForceMode.Force);
     }

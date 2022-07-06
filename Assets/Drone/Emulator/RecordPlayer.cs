@@ -23,6 +23,11 @@ public class RecordPlayer : MonoBehaviour
     [Header("Input")]
     public AnimationCurve IdealData;
 
+    private void Start()
+    {
+        ResetEmulator();    
+    }
+
     private void Update()
     {
         ResetEmulator();

@@ -23,32 +23,40 @@ public class DroneController : MonoBehaviour
     public DroneStabilizator Drone;
     
     public float HeightSpeed = 1;
+    public float YawSpeed = 360;
 
-    public float currentHeight = 5;
+    private float currentHeight = 5;
+    private float currentYaw;
+
+    private float initialYaw;
     private float initialHeight;
 
     private void Start()
     {
-        initialHeight = currentHeight = Drone.transform.position.y;    
+        initialHeight = currentHeight = Drone.transform.position.y;
+        initialYaw = currentYaw = Drone.transform.eulerAngles.y;
     }
 
     void LateUpdate()
     {
         float roll = 0;
         float pitch = 0;
-        float yaw = 0;
 
         if (Input.GetKey(KeyCode.A)) roll = 1;
         if (Input.GetKey(KeyCode.D)) roll = -1;
         if (Input.GetKey(KeyCode.W)) pitch = 1;
         if (Input.GetKey(KeyCode.S)) pitch = -1;
-        if (Input.GetKey(KeyCode.Q)) yaw = -1;
-        if (Input.GetKey(KeyCode.E)) yaw = 1;
+        if (Input.GetKey(KeyCode.Q)) currentYaw -= YawSpeed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.E)) currentYaw += YawSpeed * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.LeftShift)) currentHeight += HeightSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.LeftControl)) currentHeight -= HeightSpeed * Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.R)) currentHeight = initialHeight;
-
-        Drone.UpdateComputer(new DroneControlllerData(roll, pitch, currentHeight, yaw));
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            currentHeight = initialHeight;
+            currentYaw = initialYaw;
+        }
+        Debug.DrawRay(Drone.transform.position, new Vector3(Mathf.Sin(currentYaw * Mathf.Deg2Rad), 0, Mathf.Cos(currentYaw * Mathf.Deg2Rad)) * 100);
+        Drone.UpdateComputer(new DroneControlllerData(roll, pitch, currentHeight, currentYaw));
     }
 }

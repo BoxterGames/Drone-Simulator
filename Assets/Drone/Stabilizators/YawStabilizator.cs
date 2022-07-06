@@ -7,18 +7,24 @@ namespace Stabilizators
 {
     public class YawStabilizator : AbstractStabilizator
     {
-        [Range(0, 1)]
-        public float StabilizationPower = 0.3f;
-        public float YawSpeed = 45;
-        private float currentYaw = 0;
+        public PID Speed;
+        public float MaximumSpeed = 360;
 
         public override float CalculateMotorsPower(DroneControlllerData data, SensorsData sensorData, float dt)
         {
-            currentYaw += YawSpeed * data.Yaw * Time.deltaTime;
-            float value = sensorData.EulerAngles.y;
-            float correction = PID.Update(AngleNormalizer.NormalizeAngle(currentYaw - value), dt);
+            float delta = AngleNormalizer.NormalizeAngle(data.Yaw - sensorData.EulerAngles.y);
+            float input = Mathf.Clamp(PID.Update(delta, dt), -1, 1);
 
-            return Mathf.Clamp(correction, -1, 1) * StabilizationPower;
+            float deltaSpeed = MaximumSpeed * input - sensorData.AngularVelocity.y;
+            float motorPower = Mathf.Clamp(Speed.Update(deltaSpeed, dt), -1, 1);
+
+            return motorPower;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            Speed.Reset();
         }
     }
 }
