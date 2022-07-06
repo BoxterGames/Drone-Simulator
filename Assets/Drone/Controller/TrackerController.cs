@@ -33,10 +33,8 @@ public class TrackerController : MonoBehaviour
         float pitchClamped = Mathf.Clamp(pitchRaw, -1, 1);
 
         //Yaw calculated
-        float delta = AngleNormalizer.NormalizeAngle(transform.eulerAngles.y - Drone.transform.eulerAngles.y);
-        float yawRaw = YawPid.Update(delta, Time.deltaTime);
-        float yawClamped = Mathf.Clamp(yawRaw, -1, 1);
+        float delta = Vector3.SignedAngle(Vector3.forward, transform.position - Drone.transform.position, Vector3.up);
 
-        Drone.UpdateComputer(new DroneControlllerData(rollClamped, pitchClamped, Height, yawClamped));
+        Drone.UpdateComputer(new DroneControlllerData(rollClamped, pitchClamped, Height, delta));
     }
 }
