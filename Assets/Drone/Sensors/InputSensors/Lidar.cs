@@ -6,14 +6,16 @@ namespace Sensors.Input
 {
     public class Lidar : InputSensor
     {
+        public Rigidbody RigidBody;
         public float Distance { get; private set; }
         public float Velocity { get; private set; }
 
         private float prevDistance;
+     
         public override void FillSensorsData(ref SensorsData data)
         {
             data.Height = Distance;
-            data.HeightVelocity = Velocity;
+            data.HeightVelocity = RigidBody.velocity.y;
         }
 
         private void FixedUpdate()

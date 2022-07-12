@@ -12,18 +12,19 @@ public class DroneMotor : MonoBehaviour
 
     public Rigidbody DroneRigidBody;
 
-    private float power;
+    public float Power;
 
     public void UpdatePower(float newPower)
     {
-        power = newPower;
+        Power = newPower;
+        SetMotor();
     }
 
-    public void Update()
+    public void SetMotor()
     {
         Vector3 direction = new Vector3(Mathf.Sin(SidePowerDirection * Mathf.Deg2Rad), 0, Mathf.Cos(SidePowerDirection * Mathf.Deg2Rad));
         Vector3 resultPower = Vector3.up * FlightPower + SidePower * direction;
 
-        DroneRigidBody?.AddForceAtPosition(transform.rotation * resultPower * power, transform.position, ForceMode.Force);
+        DroneRigidBody?.AddForceAtPosition(transform.rotation * resultPower * Power, transform.position, ForceMode.Force);
     }
 }
