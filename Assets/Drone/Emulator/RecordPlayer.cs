@@ -22,6 +22,7 @@ public class RecordPlayer : MonoBehaviour
 
     [Header("Input")]
     public AnimationCurve IdealData;
+    public bool AutoPlaying = true;
 
     private void Start()
     {
@@ -29,6 +30,18 @@ public class RecordPlayer : MonoBehaviour
     }
 
     private void Update()
+    {
+        if (AutoPlaying)
+        {
+            AutoPlay();
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            NextFrame();
+        }
+    }
+
+    private void AutoPlay()
     {
         ResetEmulator();
 
