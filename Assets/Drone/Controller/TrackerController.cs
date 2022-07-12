@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class TrackerController : MonoBehaviour
 {
+    [Header("Simulation")]
+    public bool AutoSimulate;
+
     public DroneStabilizator Drone;
     public DroneReseter Reseter;
 
     public PID SidePid;
-    public PID ForwardPid;
-    public PID YawPid;
+   
+    [Header("Distance")]
+    public SimplePID ForwardPid;
+    public FollowerCompensator Forward;
+    public float ForwardOffset = 5;
 
     public float Height = 5;
+    private float prevPitchDelta;
 
     private void Start()
     {
@@ -20,8 +27,14 @@ public class TrackerController : MonoBehaviour
 
     private void Update()
     {
-        Reseter.SetResetTransform(transform.position, transform.rotation);
+        if (AutoSimulate)
+        {
+            SendData(Time.deltaTime);
+        }
+    }
 
+    public void SendData(float deltaTime)
+    {
         Vector3 localPoint = Drone.transform.InverseTransformPoint(transform.position);
 
         //Roll calculated
@@ -29,12 +42,15 @@ public class TrackerController : MonoBehaviour
         float rollClamped = Mathf.Clamp(rollRaw, -1, 1);
 
         //Pitch caclculated
-        float pitchRaw = ForwardPid.Update(localPoint.z, Time.deltaTime);
-        float pitchClamped = Mathf.Clamp(pitchRaw, -1, 1);
+        var deltaPitch = (Drone.transform.position - transform.position);
+        deltaPitch.y = 0;
+        float pitch = -Forward.CalculatePower(deltaPitch.magnitude, ForwardOffset, Time.deltaTime);
+        Debug.Log(deltaPitch.magnitude+" "+ForwardOffset+" "+pitch);
 
         //Yaw calculated
-        float delta = Vector3.SignedAngle(Vector3.forward, transform.position - Drone.transform.position, Vector3.up);
+        Vector3 deltaYaw = transform.position - Drone.transform.position;
+        float yaw = Vector3.SignedAngle(Vector3.forward, deltaYaw, Vector3.up);
 
-        Drone.UpdateComputer(new DroneControlllerData(rollClamped, pitchClamped, Height, delta));
+        Drone.UpdateComputer(new DroneControlllerData(rollClamped, pitch, Height, yaw));
     }
 }

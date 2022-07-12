@@ -5,6 +5,8 @@ using Sensors;
 
 public class HeightEmulator : AbstractEmulator
 {
+    public FollowerCompensator Compensator = new FollowerCompensator();
+
     [Header("Copter settings")]
     public float MotorForce = -3 * G;
 
@@ -29,7 +31,7 @@ public class HeightEmulator : AbstractEmulator
 
         var sensors = CalculatePhysics(data);
         var input = new DroneControlllerData() { Height = data.IdealData };
-        Force = MotorForce * Stabilizator.CalculateMotorsPower(input, sensors, data.DeltaTime);
+        Force = MotorForce * Compensator.CalculatePower(sensors.Height, data.IdealData, data.DeltaTime);
     }
 
     public SensorsData CalculatePhysics(FrameData data)
