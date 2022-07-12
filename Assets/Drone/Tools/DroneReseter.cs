@@ -34,10 +34,16 @@ public class DroneReseter : MonoBehaviour
             return;
         }
 
+        Reset();
+    }
+
+    public void Reset()
+    {
         droneBody.transform.position = initialPosition;
         droneBody.transform.rotation = initialRotation;
         droneBody.velocity = Vector3.zero;
         droneBody.angularVelocity = Vector3.zero;
+
         stabilizator.Reset();
     }
 }
