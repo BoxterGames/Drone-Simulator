@@ -2,23 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrackerController : MonoBehaviour
+public class SimpleTrackerController : MonoBehaviour
 {
-    [Header("Simulation")]
-    public bool AutoSimulate;
-
     public DroneStabilizator Drone;
     public DroneReseter Reseter;
 
     public PID SidePid;
-   
-    [Header("Distance")]
-    public SimplePID ForwardPid;
-    public FollowerCompensator Forward;
-    public float ForwardOffset = 5;
+    public PID ForwardPid;
 
+    public float ForwardOffset = 15;
     public float Height = 5;
-    private float prevPitchDelta;
 
     private void Start()
     {
@@ -27,10 +20,7 @@ public class TrackerController : MonoBehaviour
 
     private void Update()
     {
-        if (AutoSimulate)
-        {
-            SendData(Time.deltaTime);
-        }
+        SendData(Time.deltaTime);
     }
 
     public void SendData(float deltaTime)
@@ -44,7 +34,7 @@ public class TrackerController : MonoBehaviour
         //Pitch caclculated
         var deltaPitch = (Drone.transform.position - transform.position);
         deltaPitch.y = 0;
-        float pitch = -Forward.CalculatePower(deltaPitch.magnitude, ForwardOffset, Time.deltaTime);
+        float pitch = ForwardPid.Update(ForwardOffset - deltaPitch.magnitude, Time.deltaTime);
 
         //Yaw calculated
         Vector3 deltaYaw = transform.position - Drone.transform.position;

@@ -31,28 +31,44 @@ public class SpeedCalculator
 [Serializable]
 public class FollowerCompensator
 {
-    public AnimationCurve Power;
+    public float DistanceP = 1;
+    public float SpeedP = 1;
+    public float TimeP = 1;
+
+    public AnimationCurve ReversePower;
+
+    [SerializeField] private float minValue = -1;
+    [SerializeField] private float maxValue = 1;
+
     private SpeedCalculator calculator = new SpeedCalculator();
     private float prevValue;
 
     public float CalculatePower(float currentValue, float idealValue, float deltaTime)
     {
+        float distance = idealValue - currentValue;
         float speed = calculator.CalculateSpeed((currentValue - prevValue) / deltaTime);
+        float time = distance / speed;
         prevValue = currentValue;
 
-        float delta = idealValue - currentValue;
+        float distanceValue = Clamp(distance * DistanceP);
+        float timeValue = Clamp(time * TimeP);
+        float speedValue = Clamp(speed * SpeedP);
 
-        if (Math.Sign(delta) != Math.Sign(speed))
+        Debug.Log(distance + " " + time + " " + speed);
+
+
+        if (Math.Sign(distance) != Math.Sign(speed))
         {
-            //Maximum drag
-            return Mathf.Clamp(Math.Sign(delta), -1, 1);
+            return -speedValue;
         }
         else
         {
-            float time = delta / speed;
-            float power = Math.Sign(delta) * Power.Evaluate(time);
-
-            return Mathf.Clamp(power, -1, 1);
+            return Mathf.Min(distanceValue, timeValue);
         }
+    }
+
+    private float Clamp(float value)
+    {
+        return Mathf.Clamp(value, minValue, maxValue);
     }
 }
